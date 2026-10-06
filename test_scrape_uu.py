@@ -2,8 +2,7 @@ from datetime import date
 
 import pytest
 
-from scrape_uu import parse_percent
-from scrape_uu import parse_date
+from scrape_uu import parse_percent, parse_date
 
 @pytest.mark.parametrize("text, expected", [
     ("27th September 2026", date(2026, 9, 27)),

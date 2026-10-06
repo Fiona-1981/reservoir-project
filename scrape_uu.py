@@ -1,5 +1,3 @@
-# Proof of concept
-
 import re
 from datetime import datetime
 
