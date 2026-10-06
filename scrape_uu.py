@@ -1,5 +1,8 @@
 # Proof of concept
 
+import re
+from datetime import datetime
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -12,13 +15,14 @@ def fetch_page():
 
 
 def parse_date(text):
-    pass
+    # "27th September 2026" -> date(2026, 9, 27)
+    without_suffix = re.sub(r"(\d+)(st|nd|rd|th)", r"\1", text.strip())
+    return datetime.strptime(without_suffix, "%d %B %Y").date()
 
 
 def parse_percent(text):
     percent = float(text.rstrip("%"))
     return percent
-
 
 
 def parse_table(html):
@@ -28,3 +32,4 @@ def parse_table(html):
 if __name__ == "__main__":
     print(f"Parsed percent: {parse_percent("51.9%")}")
     print(f"Parsed percent: {parse_percent("-3.2%")}")
+    print(f"Parsed date: {parse_date("27th September 2026")}")

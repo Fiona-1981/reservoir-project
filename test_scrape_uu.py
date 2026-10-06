@@ -1,10 +1,26 @@
+from datetime import date
+
 import pytest
 
 from scrape_uu import parse_percent
 from scrape_uu import parse_date
 
-# def test_parse_date():
-#     assert parse_date("9th September 2026") ==
+@pytest.mark.parametrize("text, expected", [
+    ("27th September 2026", date(2026, 9, 27)),
+    ("1st October 2026", date(2026, 10, 1)),
+    ("2nd October 2026", date(2026, 10, 2)),
+    ("3rd October 2026", date(2026, 10, 3)),
+    ("9th September 2026", date(2026, 9, 9)),
+    ("22nd February 2026", date(2026, 2, 22)),
+])
+def test_parse_date(text, expected):
+    assert parse_date(text) == expected
+
+
+def test_parse_date_rejects_bad_date():
+    with pytest.raises(ValueError):
+        parse_date("31st September 2026")
+
 
 @pytest.mark.parametrize("text, expected", [
     ("60.2%", 60.2),
