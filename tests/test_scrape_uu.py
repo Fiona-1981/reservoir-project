@@ -1,8 +1,9 @@
 from datetime import date
-
+from pathlib import Path
 import pytest
+from scrape_uu import parse_percent, parse_date, parse_table
 
-from scrape_uu import parse_percent, parse_date
+FIXTURES = Path(__file__).parent / "fixtures"
 
 @pytest.mark.parametrize("text, expected", [
     ("27th September 2026", date(2026, 9, 27)),
@@ -30,3 +31,12 @@ def test_parse_date_rejects_bad_date():
 ])
 def test_parse_percent(text, expected):
     assert parse_percent(text) == expected
+
+
+@pytest.fixture
+def uu_html():
+    return (FIXTURES / "uu_reservoir_levels.html").read_text(encoding="utf-8")
+
+def test_parse_table(uu_html):
+    assert parse_table(uu_html) == date(2026, 9, 27)
+

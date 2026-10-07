@@ -1,6 +1,5 @@
 import re
 from datetime import datetime
-
 import requests
 from bs4 import BeautifulSoup
 
@@ -8,8 +7,8 @@ from bs4 import BeautifulSoup
 def fetch_page():
     url = "https://www.unitedutilities.com/help-and-support/your-water-supply/your-reservoirs/reservoir-levels/"
     r = requests.get(url, headers={"User-Agent": "Mozilla/5.0"})
-    print(r.status_code)
-    print("Regional Total" in r.text)
+    r.raise_for_status()
+    return r.text
 
 
 def parse_date(text):
@@ -24,7 +23,11 @@ def parse_percent(text):
 
 
 def parse_table(html):
-    pass
+    soup = BeautifulSoup(html, "html.parser")
+    table = soup.find_all("table")[0]
+    th = table.find_all("th")[0]
+    return parse_date(th.get_text(strip=True))
+
 
 
 if __name__ == "__main__":
