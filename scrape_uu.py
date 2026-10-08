@@ -34,3 +34,4 @@ if __name__ == "__main__":
     print(f"Parsed percent: {parse_percent("51.9%")}")
     print(f"Parsed percent: {parse_percent("-3.2%")}")
     print(f"Parsed date: {parse_date("27th September 2026")}")
+    print(parse_table)
