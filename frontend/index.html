@@ -5,6 +5,13 @@
         <title>Reservoirs</title>
         <script src="https://cdn.jsdelivr.net/npm/chart.js@4" defer></script>
         <script src="app.js" defer></script>
+        <style>
+            /* Chart.js sizes the chart to fit its parent, so this sets the chart size */
+            .chart-container {
+                position: relative;
+                width: 50%;
+            }
+        </style>
     </head>
 
     <body>
@@ -18,5 +25,7 @@
             </thead>
             <tbody id="reservoir-rows"></tbody>
         </table>
+        <div class="chart-container">
             <canvas id="reservoir-chart"></canvas>
+        </div>
     </body>
