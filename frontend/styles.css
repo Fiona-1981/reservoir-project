@@ -1,7 +1,14 @@
 /* Chart.js sizes the chart to fit its parent, so this sets the chart size */
 .chart-container {
     position: relative;
-    width: 50%;
+    width: 100%;
+}
+
+/* Half width on screens wider than a phone */
+@media (min-width: 768px) {
+    .chart-container {
+        width: 50%;
+    }
 }
 
 table {
