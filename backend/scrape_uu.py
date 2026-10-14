@@ -80,7 +80,6 @@ def parse_table(html):
 
 
 if __name__ == "__main__":
-    print(f"Parsed percent: {parse_percent("51.9%")}")
-    print(f"Parsed percent: {parse_percent("-3.2%")}")
-    print(f"Parsed date: {parse_date("27th September 2026")}")
-    print(parse_table)
+    week = parse_table(fetch_page())
+    # The models serialise with camelCase aliases, matching contract/sample.json
+    print(week.model_dump_json(indent=2))
