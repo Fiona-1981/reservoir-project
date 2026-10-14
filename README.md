@@ -13,14 +13,14 @@ scraping the web page instead.
 The project is split into parts that can be worked on independently:
 
 ```
-backend/    Python scraper that fetches and parses the reservoir levels page
+backend/    Python scraper, data models and AWS Lambda handler
 contract/   Sample JSON showing the data shape shared by back end and front end
 frontend/   Web page that displays the data as a table and a chart
 ```
 
-The `contract/sample.json` file defines the agreed data format. The front end
-reads it today; the plan is for the back end to produce a file in the same
-shape, so the two sides can be developed separately.
+The `contract/sample.json` file defines the agreed data format. The back end
+writes its history in the same shape, so the front end can switch from the
+sample file to real data without changing how it reads it.
 
 ## Status
 
@@ -29,21 +29,24 @@ Early proof of concept.
 **Back end** can:
 
 - fetch the United Utilities reservoir levels page
-- parse percentage strings such as `"51.9%"` into numbers
-- parse dates such as `"27th September 2026"`
-- read the date from the reservoir levels table
+- parse the full table of reservoir levels, including the regional total:
+  actual stock, change since last week, average year and last year
+- fail with a clear error if the table's layout changes
 - load and write the contract format using Pydantic models (`models.py`)
+- run as an AWS Lambda function that saves each week's levels to S3 and keeps
+  a running history (`handler.py`)
 
 **Front end** can:
 
 - show a table of the latest week's reservoir levels from `contract/sample.json`
 - show a line chart of levels over time, one line per reservoir
+- adjust the chart size for phone screens
 
 Still to do:
 
-- parse the full table of reservoir levels in the back end
-- publish the scraped data (e.g. to S3, on a schedule) and have the front end
-  read it instead of the sample file
+- deploy the Lambda function, S3 bucket and a weekly EventBridge schedule
+- have the front end read `history.json` from S3 instead of the sample file
+  (this needs CORS set up on the bucket)
 
 ## Back end
 
@@ -68,6 +71,9 @@ cd backend
 python3 scrape_uu.py
 ```
 
+This fetches the live page once and prints the latest week as JSON in the
+contract format. It needs a network connection.
+
 ### Running the tests
 
 From the `backend/` folder:
@@ -77,14 +83,38 @@ python3 -m pytest -v
 ```
 
 The tests use a saved copy of the page in `tests/fixtures/`, so they don't need
-a network connection. They also check that `contract/sample.json` matches the
-Pydantic models.
+a network connection or AWS. They also check that `contract/sample.json`
+matches the Pydantic models.
 
 ### Naming
 
 Python code uses snake_case (`actual_stock`) and the JSON contract uses
 camelCase (`actualStock`). The models in `models.py` are the one place that
 translates between the two.
+
+### Lambda function
+
+`handler.lambda_handler` runs the whole back end once:
+
+1. fetches and parses the live page
+2. writes that week to `snapshots/<date>.json`
+3. reads `history.json`, adds the week (replacing it if that date is already
+   there), and writes `history.json` back
+
+The S3 bucket name comes from the `BUCKET_NAME` environment variable. The
+merging logic lives in `merge_week`, which doesn't touch S3, so it can be
+tested on its own.
+
+When deploying:
+
+- give the function's role `s3:GetObject`, `s3:PutObject` and `s3:ListBucket`
+  on the bucket. Without `s3:ListBucket`, S3 reports a missing `history.json`
+  as "access denied", and the first run fails instead of starting a new history
+- set the timeout to around 30 seconds, as the default of 3 seconds may be too
+  short for fetching the page
+- include `requests`, `beautifulsoup4` and `pydantic` in the deployment
+  package, installed for Lambda's Linux platform (`pydantic_core` contains
+  compiled code). Lambda already provides `boto3`
 
 ## Front end
 
@@ -97,10 +127,14 @@ python3 -m http.server
 
 Then open <http://localhost:8000/frontend/>.
 
+The front end is deployed with Vercel. `vercel.json` redirects the site's root
+to `/frontend/`.
+
 ## Built with
 
 - [Requests](https://requests.readthedocs.io/) for fetching the page
 - [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/) for parsing the HTML
 - [Pydantic](https://docs.pydantic.dev/) for the data models
+- [boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html) for reading and writing S3
 - [pytest](https://docs.pytest.org/) for testing
 - [Chart.js](https://www.chartjs.org/) for the chart
