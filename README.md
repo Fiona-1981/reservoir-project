@@ -32,6 +32,7 @@ Early proof of concept.
 - parse percentage strings such as `"51.9%"` into numbers
 - parse dates such as `"27th September 2026"`
 - read the date from the reservoir levels table
+- load and write the contract format using Pydantic models (`models.py`)
 
 **Front end** can:
 
@@ -50,27 +51,40 @@ Requires Python 3.12 or later.
 
 ### Setup
 
+The virtual environment lives in the project root. From the project root:
+
 ```bash
-cd backend
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+pip install -r backend/requirements.txt
 ```
 
 ### Usage
 
+With the virtual environment activated, from the `backend/` folder:
+
 ```bash
+cd backend
 python3 scrape_uu.py
 ```
 
 ### Running the tests
+
+From the `backend/` folder:
 
 ```bash
 python3 -m pytest -v
 ```
 
 The tests use a saved copy of the page in `tests/fixtures/`, so they don't need
-a network connection.
+a network connection. They also check that `contract/sample.json` matches the
+Pydantic models.
+
+### Naming
+
+Python code uses snake_case (`actual_stock`) and the JSON contract uses
+camelCase (`actualStock`). The models in `models.py` are the one place that
+translates between the two.
 
 ## Front end
 
@@ -87,5 +101,6 @@ Then open <http://localhost:8000/frontend/>.
 
 - [Requests](https://requests.readthedocs.io/) for fetching the page
 - [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/) for parsing the HTML
+- [Pydantic](https://docs.pydantic.dev/) for the data models
 - [pytest](https://docs.pytest.org/) for testing
 - [Chart.js](https://www.chartjs.org/) for the chart
