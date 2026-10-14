@@ -1,38 +1,38 @@
 {
     "waterCompany": "United Utilities",
-    "weeks":
-    [
-        {"week": 1, "date": "2026-09-26",
+    "weeks": [
+        {
+            "date": "2026-09-26",
             "reservoirs": [
-                {"name": "Carlisle", "actualStock": 91.1}, 
-                {"name": "Haweswater & Thirlmere", "actualStock": 40.3}, 
+                {"name": "Carlisle", "actualStock": 91.1},
+                {"name": "Haweswater & Thirlmere", "actualStock": 40.3},
                 {"name": "Pennine Sources", "actualStock": 50.2},
                 {"name": "Dee & Vyrnwy Reservoirs", "actualStock": 56.34}
             ]
         },
-
-        {"week": 1, "date": "2026-10-04",
+        {
+            "date": "2026-10-04",
             "reservoirs": [
-                {"name": "Carlisle", "actualStock": 92.3}, 
-                {"name": "Haweswater & Thirlmere", "actualStock": 42.5}, 
+                {"name": "Carlisle", "actualStock": 92.3},
+                {"name": "Haweswater & Thirlmere", "actualStock": 42.5},
                 {"name": "Pennine Sources", "actualStock": 51.9},
                 {"name": "Dee & Vyrnwy Reservoirs", "actualStock": 57.3}
             ]
         },
-
-        {"week": 2, "date": "2026-10-11",
+        {
+            "date": "2026-10-11",
             "reservoirs": [
-                {"name": "Carlisle", "actualStock": 95.7}, 
-                {"name": "Haweswater & Thirlmere", "actualStock": 50.9}, 
+                {"name": "Carlisle", "actualStock": 95.7},
+                {"name": "Haweswater & Thirlmere", "actualStock": 50.9},
                 {"name": "Pennine Sources", "actualStock": 60.1},
                 {"name": "Dee & Vyrnwy Reservoirs", "actualStock": 59.2}
             ]
         },
-
-        {"week": 3, "date": "2026-10-18",
+        {
+            "date": "2026-10-18",
             "reservoirs": [
-                {"name": "Carlisle", "actualStock": 95.1}, 
-                {"name": "Haweswater & Thirlmere", "actualStock": 49.2}, 
+                {"name": "Carlisle", "actualStock": 95.1},
+                {"name": "Haweswater & Thirlmere", "actualStock": 49.2},
                 {"name": "Pennine Sources", "actualStock": 55.3},
                 {"name": "Dee & Vyrnwy Reservoirs", "actualStock": 57.9}
             ]
