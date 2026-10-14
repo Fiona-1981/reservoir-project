@@ -4,37 +4,37 @@
         {
             "date": "2026-09-26",
             "reservoirs": [
-                {"name": "Carlisle", "actualStock": 91.1},
-                {"name": "Haweswater & Thirlmere", "actualStock": 40.3},
-                {"name": "Pennine Sources", "actualStock": 50.2},
-                {"name": "Dee & Vyrnwy Reservoirs", "actualStock": 56.34}
+                {"name": "Carlisle", "actualStock": 91.1, "changeSinceLastWeek": -1.0, "averageYear": 86.3, "lastYear": 98.7},
+                {"name": "Haweswater & Thirlmere", "actualStock": 40.3, "changeSinceLastWeek": -1.4, "averageYear": 62.3, "lastYear": 58.0},
+                {"name": "Pennine Sources", "actualStock": 50.2, "changeSinceLastWeek": -0.7, "averageYear": 69.4, "lastYear": 51.7},
+                {"name": "Dee & Vyrnwy Reservoirs", "actualStock": 56.34, "changeSinceLastWeek": -1.1, "averageYear": 76.5, "lastYear": 75.5}
             ]
         },
         {
             "date": "2026-10-04",
             "reservoirs": [
-                {"name": "Carlisle", "actualStock": 92.3},
-                {"name": "Haweswater & Thirlmere", "actualStock": 42.5},
-                {"name": "Pennine Sources", "actualStock": 51.9},
-                {"name": "Dee & Vyrnwy Reservoirs", "actualStock": 57.3}
+                {"name": "Carlisle", "actualStock": 92.3, "changeSinceLastWeek": 1.2, "averageYear": 86.9, "lastYear": 98.2},
+                {"name": "Haweswater & Thirlmere", "actualStock": 42.5, "changeSinceLastWeek": 2.2, "averageYear": 62.8, "lastYear": 57.6},
+                {"name": "Pennine Sources", "actualStock": 51.9, "changeSinceLastWeek": 1.7, "averageYear": 69.9, "lastYear": 52.4},
+                {"name": "Dee & Vyrnwy Reservoirs", "actualStock": 57.3, "changeSinceLastWeek": 1.0, "averageYear": 76.8, "lastYear": 75.1}
             ]
         },
         {
             "date": "2026-10-11",
             "reservoirs": [
-                {"name": "Carlisle", "actualStock": 95.7},
-                {"name": "Haweswater & Thirlmere", "actualStock": 50.9},
-                {"name": "Pennine Sources", "actualStock": 60.1},
-                {"name": "Dee & Vyrnwy Reservoirs", "actualStock": 59.2}
+                {"name": "Carlisle", "actualStock": 95.7, "changeSinceLastWeek": 3.4, "averageYear": 87.4, "lastYear": 97.9},
+                {"name": "Haweswater & Thirlmere", "actualStock": 50.9, "changeSinceLastWeek": 8.4, "averageYear": 63.5, "lastYear": 58.3},
+                {"name": "Pennine Sources", "actualStock": 60.1, "changeSinceLastWeek": 8.2, "averageYear": 70.6, "lastYear": 53.8},
+                {"name": "Dee & Vyrnwy Reservoirs", "actualStock": 59.2, "changeSinceLastWeek": 1.9, "averageYear": 77.2, "lastYear": 74.9}
             ]
         },
         {
             "date": "2026-10-18",
             "reservoirs": [
-                {"name": "Carlisle", "actualStock": 95.1},
-                {"name": "Haweswater & Thirlmere", "actualStock": 49.2},
-                {"name": "Pennine Sources", "actualStock": 55.3},
-                {"name": "Dee & Vyrnwy Reservoirs", "actualStock": 57.9}
+                {"name": "Carlisle", "actualStock": 95.1, "changeSinceLastWeek": -0.6, "averageYear": 88.0, "lastYear": 97.4},
+                {"name": "Haweswater & Thirlmere", "actualStock": 49.2, "changeSinceLastWeek": -1.7, "averageYear": 64.1, "lastYear": 59.5},
+                {"name": "Pennine Sources", "actualStock": 55.3, "changeSinceLastWeek": -4.8, "averageYear": 71.2, "lastYear": 55.0},
+                {"name": "Dee & Vyrnwy Reservoirs", "actualStock": 57.9, "changeSinceLastWeek": -1.3, "averageYear": 77.5, "lastYear": 74.6}
             ]
         }
     ]

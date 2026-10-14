@@ -16,6 +16,10 @@ class ContractModel(BaseModel):
 class Reservoir(ContractModel):
     name: str
     actual_stock: float
+    # Optional so that JSON written before these fields existed still loads
+    change_since_last_week: float | None = None
+    average_year: float | None = None
+    last_year: float | None = None
 
 
 class Week(ContractModel):

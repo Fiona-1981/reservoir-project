@@ -2,6 +2,10 @@ import re
 from datetime import datetime
 import requests
 from bs4 import BeautifulSoup
+from models import Reservoir, Week
+
+# The value columns after the date, in the order UU's table shows them
+EXPECTED_COLUMNS = ["Actual stock", "Change since last week", "Average year", "Last year"]
 
 
 def fetch_page():
@@ -22,11 +26,56 @@ def parse_percent(text):
     return percent
 
 
+def cell_text(cell):
+    # strip=True also copes with cells that wrap their value in a stray <p>
+    return cell.get_text(strip=True)
+
+
 def parse_table(html):
     soup = BeautifulSoup(html, "html.parser")
-    table = soup.find_all("table")[0]
-    th = table.find_all("th")[0]
-    return parse_date(th.get_text(strip=True))
+    table = soup.find("table")
+    if table is None:
+        raise ValueError("No table found on the reservoir levels page")
+
+    thead = table.find("thead")
+    header = [cell_text(th) for th in thead.find_all("th")] if thead else []
+    if header[1:] != EXPECTED_COLUMNS:
+        raise ValueError(
+            f"Unexpected table header: expected a date followed by "
+            f"{EXPECTED_COLUMNS}, got {header}"
+        )
+    try:
+        week_date = parse_date(header[0])
+    except ValueError as err:
+        raise ValueError(f"Could not read a date from the table header: {header[0]!r}") from err
+
+    tbody = table.find("tbody")
+    rows = tbody.find_all("tr") if tbody else []
+    if not rows:
+        raise ValueError("Reservoir levels table has no rows")
+
+    reservoirs = []
+    for row in rows:
+        name_cell = row.find("th")
+        if name_cell is None:
+            raise ValueError(f"Table row has no reservoir name: {cell_text(row)!r}")
+        name = cell_text(name_cell)
+        values = [cell_text(td) for td in row.find_all("td")]
+        if len(values) != len(EXPECTED_COLUMNS):
+            raise ValueError(
+                f"Expected {len(EXPECTED_COLUMNS)} values for {name!r}, "
+                f"got {len(values)}: {values}"
+            )
+        actual_stock, change, average_year, last_year = (parse_percent(v) for v in values)
+        reservoirs.append(Reservoir(
+            name=name,
+            actual_stock=actual_stock,
+            change_since_last_week=change,
+            average_year=average_year,
+            last_year=last_year,
+        ))
+
+    return Week(date=week_date, reservoirs=reservoirs)
 
 
 

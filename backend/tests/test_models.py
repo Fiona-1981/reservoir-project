@@ -25,5 +25,22 @@ def test_sample_contract_round_trips(sample_json):
 
 
 def test_serialises_to_camel_case():
-    reservoir = Reservoir(name="Carlisle", actual_stock=90.0)
-    assert reservoir.model_dump() == {"name": "Carlisle", "actualStock": 90.0}
+    reservoir = Reservoir(
+        name="Carlisle",
+        actual_stock=90.0,
+        change_since_last_week=-10.0,
+        average_year=86.3,
+        last_year=98.7,
+    )
+    assert reservoir.model_dump() == {
+        "name": "Carlisle",
+        "actualStock": 90.0,
+        "changeSinceLastWeek": -10.0,
+        "averageYear": 86.3,
+        "lastYear": 98.7,
+    }
+
+
+def test_loads_json_without_newer_fields():
+    reservoir = Reservoir.model_validate_json('{"name": "Carlisle", "actualStock": 90.0}')
+    assert reservoir.average_year is None
