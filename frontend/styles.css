@@ -1,0 +1,9 @@
+/* Chart.js sizes the chart to fit its parent, so this sets the chart size */
+.chart-container {
+    position: relative;
+    width: 50%;
+}
+
+table {
+    margin-bottom: 2rem;
+}

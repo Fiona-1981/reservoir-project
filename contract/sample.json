@@ -2,6 +2,15 @@
     "waterCompany": "United Utilities",
     "weeks":
     [
+        {"week": 1, "date": "2026-09-26",
+            "reservoirs": [
+                {"name": "Carlisle", "actualStock": 91.1}, 
+                {"name": "Haweswater & Thirlmere", "actualStock": 40.3}, 
+                {"name": "Pennine Sources", "actualStock": 50.2},
+                {"name": "Dee & Vyrnwy Reservoirs", "actualStock": 56.34}
+            ]
+        },
+
         {"week": 1, "date": "2026-10-04",
             "reservoirs": [
                 {"name": "Carlisle", "actualStock": 92.3}, 
