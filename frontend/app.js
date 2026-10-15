@@ -1,4 +1,4 @@
-fetch("../backend/history.json")
+fetch("https://reservoir-levels-521765618583-eu-west-2-an.s3.eu-west-2.amazonaws.com/history.json")
   .then(response => response.json())
   .then(data => {
     renderTable(data);
