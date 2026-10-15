@@ -30,6 +30,9 @@ function renderTable(data) {
 function renderChart(data) {
   const canvas = document.getElementById("reservoir-chart");
 
+  // Chart.js doesn't use the page's CSS font, so copy it from the page
+  Chart.defaults.font.family = getComputedStyle(document.body).fontFamily;
+
   // x-axis: one label per week
   const labels = data.weeks.map(week => week.date);
 

@@ -1,3 +1,8 @@
+/* Each device's own interface font, with sans-serif as the fallback */
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
 /* Chart.js sizes the chart to fit its parent, so this sets the chart size */
 .chart-container {
     position: relative;
@@ -13,4 +18,9 @@
 
 table {
     margin-bottom: 2rem;
+}
+
+/* Space between the reservoir names and the percentages */
+th, td {
+    padding-right: 2rem;
 }
