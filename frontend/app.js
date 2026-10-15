@@ -33,9 +33,12 @@ function renderChart(data) {
   // x-axis: one label per week
   const labels = data.weeks.map(week => week.date);
 
-  // reservoir names, taken from the latest week
+  // reservoir names, taken from the latest week. Regional Total is left out
+  // because it's an overall figure, not a reservoir
   const latest = data.weeks[data.weeks.length - 1];
-  const names = latest.reservoirs.map(reservoir => reservoir.name);
+  const names = latest.reservoirs
+    .map(reservoir => reservoir.name)
+    .filter(name => name !== "Regional Total");
 
   // one line (dataset) per reservoir
   const datasets = names.map(name => ({
