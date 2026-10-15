@@ -1,0 +1,17 @@
+# Everything the Lambda needs, plus packages only used locally
+-r requirements.txt
+
+# boto3 is provided by the Lambda runtime, so it isn't packaged
+boto3==1.43.113
+botocore==1.43.113
+jmespath==1.1.0
+python-dateutil==2.9.0.post0
+s3transfer==0.19.2
+six==1.17.0
+
+# Testing
+iniconfig==2.3.0
+packaging==26.3
+pluggy==1.6.0
+Pygments==2.21.0
+pytest==9.1.1

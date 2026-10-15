@@ -59,8 +59,11 @@ The virtual environment lives in the project root. From the project root:
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r backend/requirements.txt
+pip install -r backend/requirements-dev.txt
 ```
+
+`requirements.txt` lists only what the Lambda function needs.
+`requirements-dev.txt` adds boto3 and the testing packages for local use.
 
 ### Usage
 
@@ -105,6 +108,15 @@ The S3 bucket name comes from the `BUCKET_NAME` environment variable. The
 merging logic lives in `merge_week`, which doesn't touch S3, so it can be
 tested on its own.
 
+To build the deployment package, with the virtual environment activated:
+
+```bash
+backend/build.sh
+```
+
+This creates `backend/lambda.zip` for Python 3.14 on arm64, containing the
+code and the packages in `requirements.txt`.
+
 When deploying:
 
 - give the function's role `s3:GetObject`, `s3:PutObject` and `s3:ListBucket`
@@ -112,9 +124,8 @@ When deploying:
   as "access denied", and the first run fails instead of starting a new history
 - set the timeout to around 30 seconds, as the default of 3 seconds may be too
   short for fetching the page
-- include `requests`, `beautifulsoup4` and `pydantic` in the deployment
-  package, installed for Lambda's Linux platform (`pydantic_core` contains
-  compiled code). Lambda already provides `boto3`
+- choose the Python 3.14 runtime and the arm64 architecture, to match the
+  build. Lambda already provides `boto3`, so it isn't in the zip
 
 ## Front end
 

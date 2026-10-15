@@ -1,4 +1,4 @@
-fetch("../contract/sample.json")
+fetch("../backend/history.json")
   .then(response => response.json())
   .then(data => {
     renderTable(data);
