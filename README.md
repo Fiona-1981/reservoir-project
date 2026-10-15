@@ -19,12 +19,22 @@ frontend/   Web page that displays the data as a table and a chart
 ```
 
 The `contract/sample.json` file defines the agreed data format. The back end
-writes its history in the same shape, so the front end can switch from the
-sample file to real data without changing how it reads it.
+writes its history to S3 in the same shape, and the front end reads it from
+there. The tests check the sample file against the back end's models.
+
+## How it fits together
+
+1. Every Thursday at 09:00 UK time, an EventBridge schedule runs the
+   `reservoir-levels-scraper` Lambda function in `eu-west-2`.
+2. The function scrapes the United Utilities page and saves the week to an S3
+   bucket, as `snapshots/<date>.json` and as part of `history.json`.
+3. The front end, hosted on Vercel, loads `history.json` from the bucket and
+   shows it as a table and a chart.
 
 ## Status
 
-Early proof of concept.
+Working end to end: the back end runs weekly on AWS and the live site shows
+the data it collects.
 
 **Back end** can:
 
@@ -38,15 +48,12 @@ Early proof of concept.
 
 **Front end** can:
 
-- show a table of the latest week's reservoir levels from `contract/sample.json`
-- show a line chart of levels over time, one line per reservoir
+- load the collected history from S3
+- show a table of the latest week's reservoir levels, including the regional
+  total
+- show a line chart of levels over time, one line per reservoir (the regional
+  total is left out of the chart)
 - adjust the chart size for phone screens
-
-Still to do:
-
-- deploy the Lambda function, S3 bucket and a weekly EventBridge schedule
-- have the front end read `history.json` from S3 instead of the sample file
-  (this needs CORS set up on the bucket)
 
 ## Back end
 
@@ -138,8 +145,13 @@ python3 -m http.server
 
 Then open <http://localhost:8000/frontend/>.
 
+The page loads `history.json` from the S3 bucket, even when running locally.
+The bucket's CORS rules allow requests from the Vercel site and from
+`http://localhost:8000`, so use that port when testing locally.
+
 The front end is deployed with Vercel. `vercel.json` redirects the site's root
-to `/frontend/`.
+to `/frontend/`, and `.vercelignore` keeps `backend/` and `NOTES.md` out of the
+deployment.
 
 ## Built with
 
