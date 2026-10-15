@@ -4,6 +4,8 @@ A small project that scrapes reservoir levels from the
 [United Utilities reservoir levels page](https://www.unitedutilities.com/help-and-support/your-water-supply/your-reservoirs/reservoir-levels/)
 and presents them through a simple web front end.
 
+Live site: <https://reservoirlevels.dev>
+
 Reservoir levels aren't available from the Environment Agency APIs, as they're
 published by the individual water companies, so this project gets them by
 scraping the web page instead.
@@ -28,8 +30,8 @@ there. The tests check the sample file against the back end's models.
    `reservoir-levels-scraper` Lambda function in `eu-west-2`.
 2. The function scrapes the United Utilities page and saves the week to an S3
    bucket, as `snapshots/<date>.json` and as part of `history.json`.
-3. The front end, hosted on Vercel, loads `history.json` from the bucket and
-   shows it as a table and a chart.
+3. The front end, hosted on Cloudflare Workers, loads `history.json` from the
+   bucket and shows it as a table and a chart.
 
 ## Status
 
@@ -146,12 +148,31 @@ python3 -m http.server
 Then open <http://localhost:8000/frontend/>.
 
 The page loads `history.json` from the S3 bucket, even when running locally.
-The bucket's CORS rules allow requests from the Vercel site and from
+The bucket's CORS rules allow requests from the live site and from
 `http://localhost:8000`, so use that port when testing locally.
 
-The front end is deployed with Vercel. `vercel.json` redirects the site's root
-to `/frontend/`, and `.vercelignore` keeps `backend/` and `NOTES.md` out of the
-deployment.
+### Hosting
+
+The front end is hosted on Cloudflare Workers as a static site, at
+<https://reservoirlevels.dev> and
+<https://reservoir-levels.fiona-087.workers.dev>. The settings are in
+`wrangler.jsonc`:
+
+- `assets.directory` is `./frontend`, so only the front end's files are
+  published. The back end, contract and other project files never reach the
+  site, and `index.html` is served at the site's root
+- `workers_dev` keeps the `workers.dev` address switched on
+- `preview_urls` is off, so Cloudflare doesn't publish separate preview
+  addresses
+
+To deploy by hand from the project root:
+
+```bash
+npx wrangler deploy
+```
+
+If the site's address changes or a new domain is added, add it to the S3
+bucket's CORS rules too, or the page won't be able to load `history.json`.
 
 ## Built with
 
@@ -161,3 +182,5 @@ deployment.
 - [boto3](https://boto3.amazonaws.com/v1/documentation/api/latest/index.html) for reading and writing S3
 - [pytest](https://docs.pytest.org/) for testing
 - [Chart.js](https://www.chartjs.org/) for the chart
+- [AWS Lambda, S3 and EventBridge](https://aws.amazon.com/) for the back end
+- [Cloudflare Workers](https://developers.cloudflare.com/workers/) for hosting the front end
